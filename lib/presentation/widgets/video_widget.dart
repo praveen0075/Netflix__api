@@ -4,19 +4,22 @@ import 'package:netflix/core/colors/colors.dart';
 
 class VideoWidget extends StatelessWidget {
   const VideoWidget({
-    super.key,
+    super.key,  required this.index, required this.imageurl,
   });
+  final int index;
+  final String imageurl;
+
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const SizedBox(
+         SizedBox(
           width: double.infinity,
           height: 200,
           child: Image(
             image: NetworkImage(
-                "https://media.themoviedb.org/t/p/w533_and_h300_bestv2/mUYV0ZdsDEliGaQahcQH1F3grsP.jpg"),
+                imageurl),
             fit: BoxFit.cover,
           ),
         ),

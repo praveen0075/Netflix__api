@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:netflix/presentation/home/screen_home.dart';
 import 'package:netflix/presentation/home/widget/custum_widget.dart';
 
-import '../../../core/constants.dart';
 
 class BackgroundCardWidget extends StatelessWidget {
   const BackgroundCardWidget({
-    super.key,
+    super.key, required this.snapshot,
   });
+
+  final AsyncSnapshot snapshot;
+ 
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +22,8 @@ class BackgroundCardWidget extends StatelessWidget {
           height: 600,
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(cMainImage), fit: BoxFit.cover)),
-        ),
+                  image: NetworkImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3Gkb6jm6962ADUPaCBqzz9CTbn9.jpg"), fit: BoxFit.cover)),
+          ),
         const Positioned(
           bottom: 0,
           left: 50,

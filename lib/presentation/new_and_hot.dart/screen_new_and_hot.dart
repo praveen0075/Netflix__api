@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:netflix/api/api.dart';
 import 'package:netflix/core/colors/colors.dart';
 import 'package:netflix/core/constants.dart';
+import 'package:netflix/model/movie.dart';
 import 'package:netflix/presentation/new_and_hot.dart/widget/coming_soon_widget.dart';
 import 'package:netflix/presentation/new_and_hot.dart/widget/everyones_watching_widget.dart';
 
-class ScreenNewAndHot extends StatelessWidget {
+class ScreenNewAndHot extends StatefulWidget {
   const ScreenNewAndHot({super.key});
 
+  @override
+  State<ScreenNewAndHot> createState() => _ScreenNewAndHotState();
+}
+late Future <List<Movies>> upComingMovies;
+late Future <List<Movies>> nowPlaying;
+
+class _ScreenNewAndHotState extends State<ScreenNewAndHot> {
+
+  @override
+  void initState() {
+    super.initState();
+    upComingMovies = Api().getupComingMovies();
+    nowPlaying = Api().getNowPlaying();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,17 +40,11 @@ class ScreenNewAndHot extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: cwhite),
                     ),
-                    actions: [
-                      const Icon(
+                    actions: const [
+                      Icon(
                         Icons.cast,
                         color: Colors.white,
                         size: 30,
-                      ),
-                      sboxW20,
-                      Container(
-                        color: Colors.blue,
-                        width: 30,
-                        height: 30,
                       ),
                     ],
                     bottom: TabBar(
@@ -67,7 +77,7 @@ class ScreenNewAndHot extends StatelessWidget {
     return ListView.builder(
         itemCount: 10,
         itemBuilder: (BuildContext context, index) {
-          return const ComingSoonWidget();
+          return  ComingSoonWidget(index: index,type: upComingMovies,);
         });
   }
 
@@ -75,7 +85,7 @@ class ScreenNewAndHot extends StatelessWidget {
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (BuildContext context, index) {
-      return const EveryonesWatchingWidget();
+      return  EveryonesWatchingWidget(index: index,type: nowPlaying,);
     });
   }
 }

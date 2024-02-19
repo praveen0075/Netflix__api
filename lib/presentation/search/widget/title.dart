@@ -1,17 +1,38 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 
-class SearchItemTitle extends StatelessWidget {
+// class SearchItemTitle extends StatelessWidget {
+//   final String title;
+//   const SearchItemTitle({
+//     super.key,
+//     required this.title,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return  Text(
+//       title,
+//       style:const TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+//     );
+//   }
+// }
+
+import 'package:flutter/material.dart';
+
+class SearchTextTitle extends StatelessWidget {
   final String title;
-  const SearchItemTitle({
+  const SearchTextTitle({
     super.key,
     required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    return  Text(
+    return Text(
       title,
-      style:const TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+      style: const TextStyle(
+        fontSize: 21,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

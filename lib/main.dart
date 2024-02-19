@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Flutter Netflix App",
       theme: ThemeData(
-       appBarTheme: AppBarTheme(backgroundColor: Colors.transparent), 
+       appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent), 
         primarySwatch: Colors.blue,
       fontFamily: GoogleFonts.montserrat().fontFamily,
       scaffoldBackgroundColor: backgrounColor,
-      textTheme:  TextTheme(
+      textTheme:  const TextTheme(
         bodyText1: TextStyle(color: Colors.white),
         bodyText2:  TextStyle(color: Colors.white),
       )

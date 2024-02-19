@@ -1,17 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:netflix/api/api.dart';
+import 'package:netflix/api/constants.dart';
 import 'package:netflix/core/colors/colors.dart';
+import 'package:netflix/model/movie.dart';
 
-class VideoListItem extends StatelessWidget {
+class VideoListItem extends StatefulWidget {
   final int index;
+
   const VideoListItem({required this.index,super.key});
 
+  @override
+  State<VideoListItem> createState() => _VideoListItemState();
+}
+
+late Future <List<Movies>> nowPlaying;
+
+class _VideoListItemState extends State<VideoListItem> {
+  String? variable;
+
+  @override
+  void initState() {
+    super.initState();
+    nowPlaying = Api().getNowPlaying();
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          color: Colors.accents[index % Colors.accents.length],
-        ),
+        FutureBuilder(future: nowPlaying, builder: (context, snapshot) {
+          if(snapshot.hasError){
+            return const Center(child: CircularProgressIndicator());
+          }else if(snapshot.hasData){
+            return  Container(
+              // child: Image.network(snapshot.data![widget.index].backDropPath),
+              decoration: BoxDecoration(image: DecorationImage(image: NetworkImage("${Constants.imagePath}${snapshot.data![widget.index].backDropPath}"))),
+          // colo: Colors.accents[widget.index % Colors.accents.length],
+        );
+          }else{
+            return const Center(child: CircularProgressIndicator());
+          }
+        },),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
@@ -20,29 +48,24 @@ class VideoListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-                //left side
                 CircleAvatar(
                   backgroundColor: Colors.black.withOpacity(0.5),
                   radius: 30,
                   child: IconButton(onPressed: (){}, icon: const Icon(Icons.volume_off ,color: cwhite,size: 30,))),
-
-                  //right side
-
-                  Column(
+                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const  EdgeInsets.symmetric(vertical: 10),
                         child: CircleAvatar(
                           radius: 28,
-                          backgroundImage: NetworkImage("https://media.themoviedb.org/t/p/w300_and_h450_bestv2/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg"),
+                          backgroundImage: NetworkImage(variable??"https://media.themoviedb.org/t/p/w300_and_h450_bestv2/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg"),
                         ),
                       ),
-                      VideoActionWiget(icon: Icons.emoji_emotions, title: 'LOL'),
-                      VideoActionWiget(icon: Icons.add, title: 'My List'),
-                      VideoActionWiget(icon: Icons.share, title: 'Share'),
-                      VideoActionWiget(icon: Icons.play_arrow, title: 'Play'),
+                      const VideoActionWiget(icon: Icons.emoji_emotions, title: 'LOL'),
+                      const VideoActionWiget(icon: Icons.add, title: 'My List'),
+                      const VideoActionWiget(icon: Icons.share, title: 'Share'),
+                      const VideoActionWiget(icon: Icons.play_arrow, title: 'Play'),
                       
                     ],
                   )

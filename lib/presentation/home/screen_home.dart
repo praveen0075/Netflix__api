@@ -1,16 +1,43 @@
+// import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:netflix/api/api.dart';
+// import 'package:netflix/api/api.dart';
 import 'package:netflix/core/colors/colors.dart';
 import 'package:netflix/core/constants.dart';
+import 'package:netflix/model/movie.dart';
 import 'package:netflix/presentation/home/widget/background_card_widget.dart';
 import 'package:netflix/presentation/home/widget/number_title_widget.dart';
 import 'package:netflix/presentation/widgets/main_title_card.dart';
 
 ValueNotifier<bool> scrollNotifier = ValueNotifier(true);
+int randomIndex = 0;
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
 
+  @override
+  State<ScreenHome> createState() => _ScreenHomeState();
+}
+late Future <List<Movies>> trendingMovies;
+late Future <List<Movies>> topRatedMovies;
+late Future <List<Movies>> top10RatedMovies;
+late Future <List<Movies>> upComingMovies;
+late Future <List<Movies>> nowPlaying;
+
+class _ScreenHomeState extends State<ScreenHome> {
+  
+  @override
+  void initState() {
+    super.initState();
+    trendingMovies = Api().getTrendingMovies();
+    topRatedMovies = Api().getTopRatedMovies();
+    top10RatedMovies = Api().get10TopRatedMovies();
+    upComingMovies = Api().getupComingMovies();
+    nowPlaying = Api().getNowPlaying();
+  }
+//  Future fetchDatas() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,22 +56,30 @@ class ScreenHome extends StatelessWidget {
                 },
                 child: Stack(
                   children: [
-                    ListView(children: [
-                      BackgroundCardWidget(),
-                      MainTitleCard(title: "Released in the past year"),
+                    ListView(children:  [
+                      FutureBuilder(future: trendingMovies, builder: (context, snapshot) {
+                        if(snapshot.hasError){
+                          return const Center(child: CircularProgressIndicator());
+                        }else if(snapshot.hasData){
+                          return  BackgroundCardWidget(snapshot: snapshot,);
+                        }else{
+                          return const Center(child: CircularProgressIndicator(),);
+                        }
+                      },),
+                      MainTitleCard(title: "Top Rated Movies",type: topRatedMovies),
                       sboxH10,
-                      MainTitleCard(title: "Trending Now"),
+                      MainTitleCard(title: "Trending Now",type: trendingMovies),
                       sboxH10,
-                      NumberTitleWidget(),
+                       NumberTitleWidget(type: top10RatedMovies),
                       sboxH10,
-                      MainTitleCard(title: "Tense Dramas"),
+                      MainTitleCard(title: "Up coming Movies",type: upComingMovies),
                       sboxH10,
-                      MainTitleCard(title: "South Indian Cinemas"),
+                      MainTitleCard(title: "Now playing Movies",type: nowPlaying),
                       sboxH10,
                     ]),
                     scrollNotifier.value == true
                         ? AnimatedContainer(
-                          duration: Duration(milliseconds: 1000),
+                          duration: const Duration(milliseconds: 1000),
                             width: double.infinity,
                             height: 90,
                             color: Colors.black.withOpacity(0.2),
@@ -62,12 +97,6 @@ class ScreenHome extends StatelessWidget {
                                       Icons.cast,
                                       color: Colors.white,
                                       size: 30,
-                                    ),
-                                    sboxW20,
-                                    Container(
-                                      color: Colors.blue,
-                                      width: 30,
-                                      height: 30,
                                     ),
                                     sboxW20,
                                     // Image.asset('assets/images/logo.png',width: 30,height: 30 ,)

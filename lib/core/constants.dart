@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:netflix/model/movie.dart';
+// import 'package:netflix/model/movie.dart';
 
 const sboxW10 = SizedBox(width: 10);
 const sboxW20 = SizedBox(width: 20);
@@ -17,3 +19,13 @@ final BorderRadius cRadius20 = BorderRadius.circular(20);
 //image//
 
 const cMainImage = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/okiB4NUriKKbGjAtVSzveicPTtu.jpg";
+
+
+// Notifires//
+
+  ValueNotifier<List<Movies>> trendingNowListNotifeir = ValueNotifier([]);
+ValueNotifier<List<Movies>> topRatedListNotifeir = ValueNotifier([]);
+ValueNotifier<List<Movies>> top10TvShowsInIndiaTodayListNotifeir =
+    ValueNotifier([]);
+ValueNotifier<List<Movies>> upComingListNotifeir = ValueNotifier([]);
+ValueNotifier<List<Movies>> searchResultListNotifeir = ValueNotifier([]);

@@ -1,33 +1,106 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/core/constants.dart';
+import 'package:netflix/core/debouncer.dart';
+import 'package:netflix/presentation/search/widget/search__idle.dart';
 // import 'package:netflix/presentation/search/widget/search__idle.dart';
 import 'package:netflix/presentation/search/widget/search_result.dart';
 
-class ScreenSearch extends StatelessWidget {
+class ScreenSearch extends StatefulWidget {
   const ScreenSearch({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return   Scaffold(
-      body: SafeArea(child: 
-      Padding(
-        padding: const EdgeInsets.all(10.0),
+  State<ScreenSearch> createState() => _ScreenSearchState();
+}
+
+class _ScreenSearchState extends State<ScreenSearch> {
+   bool changer = false;
+  final searchController = TextEditingController();
+  final _debonucer = Debouncer(delay: const Duration(milliseconds: 500));
+  final ValueNotifier<bool> showSearchResult = ValueNotifier(false);
+
+  @override
+ Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CupertinoSearchTextField(
-              backgroundColor: Colors.grey.withOpacity(0.3),
-              prefixIcon: const Icon(CupertinoIcons.search,color:Colors.grey,),
-              suffixIcon: const Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey,),
-              style: const TextStyle(color: Colors.white),
+            SizedBox(
+              height: 40,
+              child: CupertinoTextField(
+                controller: searchController,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey.withOpacity(0.4),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                prefix: const Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Icon(
+                    CupertinoIcons.search,
+                    color: Colors.grey,
+                  ),
+                ),
+                placeholder: 'Search',
+                placeholderStyle: const TextStyle(color: Colors.white),
+                suffix: ValueListenableBuilder<bool>(
+                  valueListenable: showSearchResult,
+                  builder: (context, value, child) {
+                    return GestureDetector(
+                      onTap: () {
+                        searchController.clear();
+                        setState(() {
+                          showSearchResult.value = false;
+                          changer = false;
+                        });
+                      },
+                      child: child,
+                    );
+                  },
+                  child: ValueListenableBuilder(
+                    valueListenable: showSearchResult,
+                    builder: (context, value, _) {
+                      return Visibility(
+                        visible: value,
+                        child: const Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Icon(
+                            CupertinoIcons.xmark_circle_fill,
+                            color: Colors.grey,
+                            size: 17,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                style: const TextStyle(color: Colors.white),
+                onChanged: (value) async {
+                  _debonucer.call(() {
+                    setState(() {
+                      changer = true;
+                      showSearchResult.value = true;
+                      if (searchController.text.isEmpty) {
+                        changer = false;
+                        showSearchResult.value = false;
+                      }
+                    });
+                  });
+                },
+              ),
             ),
             sboxH10,
-          //  const Expanded(child: SearchIdleWidget())
-           const Expanded(child: SearchResutWidget())
+            Expanded(
+              child: changer
+                  ? SearchResult(
+                      result: searchController.text,
+                    )
+                  : const SearchIdleWidget(),
+            ),
           ],
         ),
-      )),
+      ),
     );
   }
 }
