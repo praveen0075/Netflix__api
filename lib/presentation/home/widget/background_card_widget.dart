@@ -10,9 +10,6 @@ class BackgroundCardWidget extends StatelessWidget {
 
   final AsyncSnapshot snapshot;
  
-  
-
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -22,7 +19,7 @@ class BackgroundCardWidget extends StatelessWidget {
           height: 600,
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3Gkb6jm6962ADUPaCBqzz9CTbn9.jpg"), fit: BoxFit.cover)),
+                  image: AssetImage("assets/images/home.jpg"), fit: BoxFit.cover)),
           ),
         const Positioned(
           bottom: 0,
