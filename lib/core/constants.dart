@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/model/movie.dart';
-// import 'package:netflix/model/movie.dart';
 
 const sboxW10 = SizedBox(width: 10);
 const sboxW20 = SizedBox(width: 20);
@@ -11,17 +10,11 @@ const sboxH50 = SizedBox(height: 50);
 const sboxW50 = SizedBox(width: 50);
 
 
-//Border Radius//
-
 final BorderRadius cRadius10 = BorderRadius.circular(10);
 final BorderRadius cRadius20 = BorderRadius.circular(20);
 
-//image//
-
 const cMainImage = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/okiB4NUriKKbGjAtVSzveicPTtu.jpg";
 
-
-// Notifires//
 
   ValueNotifier<List<Movies>> trendingNowListNotifeir = ValueNotifier([]);
 ValueNotifier<List<Movies>> topRatedListNotifeir = ValueNotifier([]);

@@ -95,7 +95,7 @@ class _ScreenSearchState extends State<ScreenSearch> {
               child: changer
                   ? SearchResult(
                       result: searchController.text,
-                    )
+                  )
                   : const SearchIdleWidget(),
             ),
           ],

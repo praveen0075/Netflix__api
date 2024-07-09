@@ -1,9 +1,7 @@
-// import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:netflix/api/api.dart';
-// import 'package:netflix/api/api.dart';
 import 'package:netflix/core/colors/colors.dart';
 import 'package:netflix/core/constants.dart';
 import 'package:netflix/model/movie.dart';
@@ -37,7 +35,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     upComingMovies = Api().getupComingMovies();
     nowPlaying = Api().getNowPlaying();
   }
-//  Future fetchDatas() async {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
